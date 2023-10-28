@@ -14,8 +14,6 @@ public partial class ClientsApiContext : DbContext
     public ClientsApiContext(DbContextOptions<ClientsApiContext> options)
         : base(options)
     {
-        var boollll = Database.CanConnect();
-        //Database.EnsureCreated();
     }
 
     public virtual DbSet<Card> Cards { get; set; }
