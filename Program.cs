@@ -14,10 +14,12 @@ builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions
     .ReferenceHandler = ReferenceHandler.Preserve);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(option =>
+
+// Настройка Swagger
+builder.Services.AddSwaggerGen(opt =>
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Client API", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Client API", Version = "v1" });
+    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization", 
         Type = SecuritySchemeType.Http,        
@@ -26,7 +28,7 @@ builder.Services.AddSwaggerGen(option =>
         In = ParameterLocation.Header,
         Description = "Please enter a valid token",
     });
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -42,17 +44,18 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-builder.Services.AddAuthentication(options =>
+// Настройка Аутентификации
+builder.Services.AddAuthentication(opt =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-    .AddJwtBearer(options =>
+    .AddJwtBearer(opt =>
     {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
+        opt.RequireHttpsMetadata = false;
+        opt.SaveToken = true;
+        opt.TokenValidationParameters = new TokenValidationParameters
         {
             ValidIssuer = "admin",
             ValidateAudience = false,
@@ -61,11 +64,12 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuerSigningKey = true,  
         };
     });
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<ClientsApiContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 var app = builder.Build();
 

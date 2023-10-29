@@ -18,7 +18,7 @@ public partial class ClientsApiContext : DbContext
 
     public virtual DbSet<Card> Cards { get; set; }
 
-    public virtual DbSet<Client> Clients { get; set; }    
+    public virtual DbSet<Client> Clients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,21 +28,19 @@ public partial class ClientsApiContext : DbContext
 
             entity.HasIndex(e => e.CardNumber, "IX_Cards_CardNumber").IsUnique();
 
+            entity.HasIndex(e => e.ClientId, "IX_Cards_ClientID").IsUnique();
+
             entity.Property(e => e.CardNumber).ValueGeneratedNever();
             entity.Property(e => e.ClientId).HasColumnName("ClientID");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.Cards)
-                .HasForeignKey(d => d.ClientId)
+            entity.HasOne(d => d.Client).WithOne(p => p.Card)
+                .HasForeignKey<Card>(d => d.ClientId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Client>(entity =>
         {
             entity.HasIndex(e => e.Id, "IX_Clients_Id").IsUnique();
-
-            entity.HasOne(d => d.Card).WithMany(p => p.Clients)
-                .HasForeignKey(d => d.CardNumber)
-                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         OnModelCreatingPartial(modelBuilder);

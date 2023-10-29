@@ -13,9 +13,5 @@ public partial class Client
 
     public string Email { get; set; } = null!;
 
-    public long CardNumber { get; set; }
-
-    public virtual Card Card { get; set; } = null!;
-
-    public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
+    public virtual Card? Card { get; set; }
 }

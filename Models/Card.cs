@@ -16,6 +16,4 @@ public partial class Card
     public int ClientId { get; set; }
 
     public virtual Client Client { get; set; } = null!;
-
-    public virtual ICollection<Client> Clients { get; set; } = new List<Client>();
 }
