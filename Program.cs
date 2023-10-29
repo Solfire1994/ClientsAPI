@@ -45,6 +45,7 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 // Настройка Аутентификации
+// Логин - string, Пароль - string
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

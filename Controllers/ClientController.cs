@@ -80,88 +80,62 @@ namespace ClientsAPI.Controllers
             var command = new DeleteClientCommand(id);
             var response = await _mediator.Send(command);
             if (response) return Ok();
-            //Client? client = Context.Clients.FirstOrDefault(c => c.Id == id);
-            //    if (client != null)
-            //    {
-            //        Context.Clients.Remove(client);
-            //        Context.SaveChanges();
-            //        return Ok();
-            //    }
             return BadRequest("Incorrect ID");
         }
 
         /// <summary>
-        /// 
+        /// Добавление нового клиента
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("AddClient")]
-        public IActionResult AddClient(ClientDTO client)
+        public async Task<IActionResult> AddClient(ClientDTO client)
         {
-            Client result = new()
-            {
-                Id = client.Id,
-                Name = client.Name,
-                PhoneNumber = client.PhoneNumber,
-                Email = client.Email,
-                Card = new Card
-                {
-                    CardNumber = client.Card.CardNumber,
-                    Validity = client.Card.Validity,
-                    CardOwnerName = client.Card.CardOwnerName,
-                    SecureCode = client.Card.SecureCode
-                }
-            };
-                Context.Clients.Add(result);
-                Context.SaveChanges();
-                return Ok();
+            var command = new AddClientCommand(client);
+            var response = await _mediator.Send(command);
+            if (response.IsValid) return Ok();
+            return BadRequest($"Entered incorrect values:{response.Value}");
         }
 
         /// <summary>
-        /// 
+        /// Обновление данных клиента
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="phoneNumber"></param>
-        /// <param name="email"></param>
+        /// <param name="id">ID Клиента</param>
+        /// <param name="name">Имя Клиента</param>
+        /// <param name="phoneNumber">Номер телефона</param>
+        /// <param name="email">Адрес электронной почты</param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("UpdateClient")]
-        public IActionResult UpdateClient(int id, string? name = null, string? phoneNumber = null, string? email = null)
+        public async Task<IActionResult> UpdateClient(int id, string? name = null, string? phoneNumber = null, string? email = null)
         {
-            var client = Context.Clients.Where(c => c.Id == id).First();
-            if (client == null) return BadRequest(id);
-            if (!string.IsNullOrEmpty(name)) client.Name = name;
-            if (!string.IsNullOrEmpty(phoneNumber)) client.PhoneNumber = phoneNumber;
-            if (!string.IsNullOrEmpty(email)) client.Email = email;
-            Context.SaveChanges();
-            return Ok();
+            var command = new UpdateClientCommand(id, name, phoneNumber, email);
+            var response = await _mediator.Send(command);
+            if (response) return Ok();
+            return BadRequest("Incorrect ID");
         }
 
 
         /// <summary>
-        /// 
+        /// Обновление данных карты клиента
         /// </summary>
-        /// <param name="ownerID"></param>
-        /// <param name="secureCode"></param>
-        /// <param name="validity"></param>
-        /// <param name="cardOwnerName"></param>
+        /// <param name="ownerID">ID владельца карты</param>
+        /// <param name="secureCode">Трехзначится защитный код</param>
+        /// <param name="validity">Срок действия</param>
+        /// <param name="cardOwnerName">Имя владельца карты</param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("UpdateCard")]
-        public IActionResult UpdateCard(int ownerID, int secureCode, string? validity = null, string? cardOwnerName = null)
+        public async Task<IActionResult> UpdateCard(int ownerID, int secureCode, string? validity = null, string? cardOwnerName = null)
         {
-            var card = Context.Cards.Where(c => c.ClientId == ownerID).First();
-            if (card == null) return BadRequest(ownerID);
-            if (!string.IsNullOrEmpty(validity)) card.Validity = validity;
-            if (!string.IsNullOrEmpty(cardOwnerName)) card.CardOwnerName = cardOwnerName;
-            if (secureCode > 99 && secureCode < 1000) card.SecureCode = secureCode;
-            Context.SaveChanges();
-            return Ok();
+            var command = new UpdateCardCommand(ownerID, secureCode, validity, cardOwnerName);
+            var response = await _mediator.Send(command);
+            if (response) return Ok();
+            return BadRequest("Incorrect Owner ID");
         }
     }
 }

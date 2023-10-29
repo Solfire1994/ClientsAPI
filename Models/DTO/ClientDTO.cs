@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ClientsAPI.Models.DTO
+﻿namespace ClientsAPI.Models.DTO
 {
     public class ClientDTO
     {

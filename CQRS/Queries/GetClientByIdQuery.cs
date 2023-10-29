@@ -1,5 +1,4 @@
-﻿using ClientsAPI.Models;
-using ClientsAPI.Models.DTO;
+﻿using ClientsAPI.Models.DTO;
 using MediatR;
 
 namespace ClientsAPI.CQRS.Queries
