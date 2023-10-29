@@ -12,6 +12,7 @@
 
         public CardDTO Card { get; set; } = null!;
 
+        public ClientDTO () { Id = 0; }
         public ClientDTO (Client client)
         {
             Id = client.Id;

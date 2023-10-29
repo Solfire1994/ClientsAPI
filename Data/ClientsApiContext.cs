@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ClientsAPI.Models;
+﻿using ClientsAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClientsAPI.Data;
