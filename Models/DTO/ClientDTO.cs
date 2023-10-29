@@ -1,15 +1,13 @@
-﻿namespace ClientsAPI.Models.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ClientsAPI.Models.DTO
 {
     public class ClientDTO
     {
         public int Id { get; set; }
-
         public string Name { get; set; } = null!;
-
         public string PhoneNumber { get; set; } = null!;
-
         public string Email { get; set; } = null!;
-
         public CardDTO Card { get; set; } = null!;
 
         public ClientDTO () { Id = 0; }
