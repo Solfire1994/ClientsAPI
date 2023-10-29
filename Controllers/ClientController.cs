@@ -1,14 +1,10 @@
 ﻿using ClientsAPI.CQRS.Commands;
 using ClientsAPI.CQRS.Queries;
-using ClientsAPI.Data;
-using ClientsAPI.Models;
 using ClientsAPI.Models.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace ClientsAPI.Controllers
 {
@@ -16,11 +12,9 @@ namespace ClientsAPI.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        private ClientsApiContext Context;
         private readonly IMediator _mediator;
-        public ClientController(ClientsApiContext context, IMediator mediator)
+        public ClientController(IMediator mediator)
         {
-            Context = context;
             _mediator = mediator;
         }
 

@@ -18,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 // Настройка Swagger
 builder.Services.AddSwaggerGen(opt =>
 {
-    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Client API", Version = "v1" });
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Clients API", Version = "v1" });
     opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization", 
